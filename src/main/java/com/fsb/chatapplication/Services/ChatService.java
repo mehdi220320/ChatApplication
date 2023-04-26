@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface ChatService {
-    public Chat addChat(Chat chat) throws ChatAlreadyExistException;
+    public Chat addChat(Chat chat) throws ChatAlreadyExistException, ChatNotFoundException;
 
     List<Chat> findallchats() throws NoChatExistsInTheRepository;
 

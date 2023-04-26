@@ -9,7 +9,6 @@ import com.fsb.chatapplication.exceptions.ChatNotFoundException;
 import com.fsb.chatapplication.exceptions.NoChatExistsInTheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,12 +20,17 @@ public class ChatServiceImpl implements ChatService{
     private ChatRepository chatRepository;
     @Autowired
     private MessageRepository messageRepository;
-    @Autowired
-    private SequenceGeneratorService sequenceGeneratorService;
+
     @Override
     public Chat addChat(Chat chat) throws ChatAlreadyExistException {
-        chat.setChatId(sequenceGeneratorService.generateSequence(Chat.SEQUENCE_NAME));
-        return chatRepository.save(chat);
+        HashSet<Chat> ch = chatRepository.getChatByFirstUserNameAndSecondUserName(chat.getFirstUserName(), chat.getSecondUserName());
+        HashSet<Chat> ch1 = chatRepository.getChatBySecondUserNameAndFirstUserName(chat.getFirstUserName(), chat.getSecondUserName());
+        if (ch.isEmpty() && ch1.isEmpty()) {
+            return chatRepository.save(chat);
+        }
+        else{
+            throw new ChatAlreadyExistException();
+        }
     }
 
     @Override

@@ -3,10 +3,11 @@ package com.fsb.chatapplication.Controller;
 import com.fsb.chatapplication.Models.Chat;
 import com.fsb.chatapplication.Models.Message;
 import com.fsb.chatapplication.Services.ChatService;
-import com.fsb.chatapplication.Services.SequenceGeneratorService;
+//import com.fsb.chatapplication.Services.SequenceGeneratorService;
 import com.fsb.chatapplication.exceptions.ChatAlreadyExistException;
 import com.fsb.chatapplication.exceptions.ChatNotFoundException;
 import com.fsb.chatapplication.exceptions.NoChatExistsInTheRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +19,20 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/chats")
+@RequestMapping("/chats")
 public class ChatController {
     @Autowired
     private ChatService chatService;
-    @Autowired
-    private SequenceGeneratorService sequenceGeneratorService;
+//    @Autowired
+//    private SequenceGeneratorService sequenceGeneratorService;
 
+    @SneakyThrows
     @PostMapping("/add")
     public ResponseEntity<Chat> createChat(@RequestBody Chat chat) throws IOException {
 
         try {
             return new ResponseEntity<Chat>(chatService.addChat(chat), HttpStatus.CREATED);
-        } catch (ChatAlreadyExistException e) {
+        } catch (ChatAlreadyExistException  e) {
             return new ResponseEntity("Chat Already Exist", HttpStatus.CONFLICT);
         }
     }

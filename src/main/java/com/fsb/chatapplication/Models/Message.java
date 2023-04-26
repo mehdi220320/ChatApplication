@@ -1,6 +1,7 @@
 // Message class
 package com.fsb.chatapplication.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class Message {
     private Date time = new Date(System.currentTimeMillis());
     private String replymessage;
     @ManyToOne
+    @JsonIgnore
     private Chat chat;
 }
