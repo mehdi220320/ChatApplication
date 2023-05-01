@@ -99,6 +99,30 @@ public class ChatServiceImpl implements ChatService{
         }
     }
     @Override
+    public Message getLastMessage(String firstName , String secondname) throws ChatNotFoundException {
+        Message lastmessage= new Message();
+        lastmessage.setFirstUsername(firstName);
+        lastmessage.setSecondUsername(secondname);
+        lastmessage.setReplymessage("Vous êtes amis sur UpcyclingArt");
+        lastmessage.setTime(null);
+        try {
+            HashSet<Chat> chatSet = this.getChatByFirstUserNameAndSecondUserName(firstName, secondname);
+            Optional<Chat> firstChat = chatSet.stream().findFirst();
+            if(firstChat.isPresent()) {
+                Chat chat = firstChat.get();
+                if(!chat.getMessages().isEmpty()){
+//                    lastmessage.setChat( chat.getMessages().get(chat.getMessages().size() - 1).getChat().getChatId());
+                    lastmessage.setReplymessage( chat.getMessages().get(chat.getMessages().size() - 1).getReplymessage());
+                    lastmessage.setSenderEmail( chat.getMessages().get(chat.getMessages().size() - 1).getSenderEmail());
+                    lastmessage.setTime( chat.getMessages().get(chat.getMessages().size() - 1).getTime());
+                }
+            }
+            return lastmessage;
+        } catch (ChatNotFoundException ex) {
+            return lastmessage;
+        }
+    }
+    @Override
     public Chat addMessage(Message newMessage, long chatId) throws ChatNotFoundException {
         Optional<Chat> optionalChat = chatRepository.findById(chatId);
         Chat chat = optionalChat.orElseThrow(() -> new ChatNotFoundException());

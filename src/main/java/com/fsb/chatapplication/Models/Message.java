@@ -22,6 +22,8 @@ public class Message {
     private String senderEmail;
     private Date time = new Date(System.currentTimeMillis());
     private String replymessage;
+    private String firstUsername;
+    private String secondUsername;
     @ManyToOne
     @JsonIgnore
     private Chat chat;

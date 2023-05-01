@@ -85,4 +85,13 @@ public class ChatController {
     public ResponseEntity<Chat> addMessage(@RequestBody Message add , @PathVariable int chatId) throws ChatNotFoundException {
         return new ResponseEntity<Chat>(chatService.addMessage(add,chatId), org.springframework.http.HttpStatus.OK);
     }
+    @GetMapping("/lastmessage")
+    public ResponseEntity<Message> getLastMessage(@RequestParam("firstUserName") String firstUserName, @RequestParam("secondUserName") String secondUserName){
+        try {
+            Message lastmessage = this.chatService.getLastMessage(firstUserName, secondUserName);
+            System.out.println(lastmessage);
+            return new ResponseEntity<>(lastmessage, HttpStatus.OK);
+        } catch (ChatNotFoundException e) {
+            return new ResponseEntity("Chat Not Exits", HttpStatus.NOT_FOUND);
+        }    }
 }
